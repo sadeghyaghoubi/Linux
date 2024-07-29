@@ -1,3 +1,6 @@
+## scp $OUTPUT root@ip:/home
+
+
 ```bash
 #!/bin/bash
 
@@ -6,5 +9,5 @@ read -p "please enter your name: " myname
 read -p "please enter your lastname:" lastname
 
 echo "your name is $myname $lastname" | tee $OUTPUT
-**scp $OUTPUT root@ip:/home**
+scp $OUTPUT root@ip:/home
 ```
