@@ -25,5 +25,8 @@ OUTPUT="/home/ubuntu/scripts/script1_`date +%Y%m%d%H%M`.log"
 read -p "please enter your name: " myname
 read -p "please enter your lastname:" lastname
 
-echo "your name is $myname $lastname" | tee $OUTPUT
+echo "your name is $myname $lastname" | tee -a $OUTPUT
 ```
+
+
+دستور tee خالی بزنیم over write میکنه اگر قرار باشه فایلی append بشه باید از tee -a استفاده کنیم
