@@ -16,6 +16,18 @@
 4. **ماه** (1 تا 12 یا Jan تا Dec)
 5. **روز هفته** (0 تا 7، 0  برای یکشنبه )
 
+```
+# Example of job definition:
+# .---------------- minute (0 - 59)
+# |  .------------- hour (0 - 23)
+# |  |  .---------- day of month (1 - 31)
+# |  |  |  .------- month (1 - 12) OR jan,feb,mar,apr ...
+# |  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat
+# |  |  |  |  |
+# *  *  *  *  * user-name command to be executed
+```
+
+
 ## مثال‌ها
 
 1. اجرای دستور هر روز ساعت 3:30 صبح:
