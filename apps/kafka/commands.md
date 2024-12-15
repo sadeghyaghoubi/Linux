@@ -1,6 +1,6 @@
 # دستورات پرکاربرد Kafka
 
-Apache Kafka یکی از محبوب‌ترین پلتفرم‌های پردازش جریان داده است. در ادامه، پرکاربردترین دستورات Kafka همراه با توضیح ساده آورده شده است:
+یکی از محبوب‌ترین پلتفرم‌های پردازش جریان داده است. در ادامه، پرکاربردترین دستورات Kafka همراه با توضیح ساده آورده شده است:
 
 ---
 
@@ -81,7 +81,7 @@ kafka-consumer-groups.sh --list --bootstrap-server <broker-address>
 kafka-consumer-groups.sh --reset-offsets --group <group-name> --topic <topic-name> --to-earliest --bootstrap-server <broker-address> --execute
 ```
 **توضیح:**  
-offset مصرف‌کننده‌ها را تنظیم مجدد می‌کند. این کار برای مدیریت lag یا بازپخش پیام‌ها مفید است.
+آفست مصرف‌کننده‌ها را تنظیم مجدد می‌کند. این کار برای مدیریت lag یا بازپخش پیام‌ها مفید است.
 
 ---
 
@@ -123,6 +123,9 @@ kafka-consumer-perf-test.sh --topic <topic-name> --messages 100 --bootstrap-serv
 ---
 
 ## نکته:  
-- ابزارها در پوشه `bin` کافکا قرار دارند.  
-- حتماً مسیر `JAVA_HOME` تنظیم شده باشد.  
+- ابزارها در پوشه `bin` کافکا قرار دارند.
+- 
+- حتماً مسیر `JAVA_HOME` تنظیم شده باشد.
+- 
 - آدرس `bootstrap-server` معمولاً به صورت `<IP>:9092` است.
+- 
