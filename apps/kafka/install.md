@@ -181,12 +181,12 @@ server.2=kafka3.local:2888:3888
 
 ```
 broker.id=0
-advertised.listeners=PLAINTEXT://swift-bsrch1.mcci.local:9092
+advertised.listeners=PLAINTEXT://kafka1.local:9092
 log.dirs=/data/kafka
 offsets.topic.replication.factor=3
 transaction.state.log.replication.factor=3
 transaction.state.log.min.isr=2
-zookeeper.connect=swift-bsrch1.mcci.local:2181,swift-bsrch2.mcci.local:2181,swift-bsrch3.mcci.local:2181
+zookeeper.connect=kafka1.local:2181,kafka2.local:2181,kafka3.local:2181
 ```
 
 #### d. استارت کردن سرویس‌ها
