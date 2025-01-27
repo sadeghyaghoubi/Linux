@@ -5,52 +5,54 @@
 
 ایندکس‌ها در Elasticsearch معادل جدول‌ها در دیتابیس رابطه‌ای هستند. ابتدا باید یک ایندکس برای ذخیره داده‌ها ایجاد کنید.
 
-### دستور ایجاد ایندکس:
+1. **ایجاد ایندکس اولیه با نام مستعار (Alias):**
 ```json
 PUT /my-index-000001
 {
-  "settings": {
-    "number_of_shards": 1,
-    "number_of_replicas": 1
-  }
+"aliases": {
+"my-index": {
+"is_write_index": true
+}
+}
 }
 ```
-- `number_of_shards`: تعداد شاردها برای توزیع داده‌ها.
-- `number_of_replicas`: تعداد نسخه‌های کپی برای تحمل خطا.
 
----
+## 2. ایجاد lifecycle
 
-## 2. ایجاد Rollover
+hot :
 
-Rollover برای مدیریت خودکار ایندکس‌ها استفاده می‌شود. این قابلیت زمانی مفید است که داده‌ها حجم زیادی دارند و نیاز به تقسیم‌بندی (rotation) دارند.
+Rollover : enable
 
-### مراحل:
-1. **ایجاد ایندکس اولیه با نام مستعار (Alias):**
-   ```json
-   PUT /my-index-000001
-   {
-     "aliases": {
-       "my-index": {
-         "is_write_index": true
-       }
-     }
-   }
-   ```
+maximum age: 30days
 
-2. **تعریف rollover:**
-   ```json
-   POST /my-index/_rollover
-   {
-     "conditions": {
-       "max_age": "30d",
-       "max_docs": 1000000
-     }
-   }
-   ```
-   - `max_age`: حداکثر سن ایندکس.
-   - `max_docs`: حداکثر تعداد مستندات.
+maximum index size : 50 days
 
----
+index priority: enable
+
+cold:
+
+move data into phase when: 1
+
+force merge : enable 
+
+number of segments:1
+
+index priority : enable 
+
+index priority: 50
+
+
+cold : disable
+
+
+delete phase 
+
+move data into phase when: : 30
+
+
+
+
+
 
 ## 3. ایجاد Index Pattern
 
@@ -72,23 +74,23 @@ Templates برای تنظیمات پیش‌فرض ایندکس‌ها استفا
 ```json
 PUT /_index_template/my-template
 {
-  "index_patterns": ["my-index-*"],
-  "template": {
-    "settings": {
-      "number_of_shards": 1
-    },
-    "mappings": {
-      "properties": {
-        "timestamp": {
-          "type": "date"
-        },
-        "message": {
-          "type": "text"
-        }
-      }
-    }
-  },
-  "priority": 1
+"index_patterns": ["my-index-*"],
+"template": {
+"settings": {
+"number_of_shards": 1
+},
+"mappings": {
+"properties": {
+"timestamp": {
+"type": "date"
+},
+"message": {
+"type": "text"
+}
+}
+}
+},
+"priority": 1
 }
 ```
 - `index_patterns`: ایندکس‌هایی که این template اعمال شود.
@@ -97,87 +99,17 @@ PUT /_index_template/my-template
 
 ---
 
-## 5. ایجاد ILM (Index Lifecycle Management)
-
-ILM برای مدیریت چرخه عمر داده‌هاست، شامل مراحل hot, warm, cold، و delete.
-
-### مراحل:
-1. **ایجاد Policy:**
-   ```json
-   PUT /_ilm/policy/my-policy
-   {
-     "policy": {
-       "phases": {
-         "hot": {
-           "actions": {
-             "rollover": {
-               "max_size": "50gb",
-               "max_age": "7d"
-             }
-           }
-         },
-         "delete": {
-           "min_age": "30d",
-           "actions": {
-             "delete": {}
-           }
-         }
-       }
-     }
-   }
-   ```
-   - `hot`: برای نوشتن و خواندن سریع.
-   - `delete`: حذف ایندکس پس از 30 روز.
-
 2. **اتصال Policy به Template:**
-   ```json
-   PUT /_index_template/my-template
-   {
-     "index_patterns": ["my-index-*"],
-     "template": {
-       "settings": {
-         "index.lifecycle.name": "my-policy",
-         "index.lifecycle.rollover_alias": "my-index"
-       }
-     }
-   }
-   ```
-
----
-
-## 6. ایجاد و ارسال داده به ایندکس
-
-برای ارسال داده، از API زیر استفاده کنید:
 ```json
-POST /my-index/_doc
+PUT /_index_template/my-template
 {
-  "timestamp": "2024-12-31T12:00:00",
-  "message": "Hello, Elasticsearch!"
+"index_patterns": ["my-index-*"],
+"template": {
+"settings": {
+"index.lifecycle.name": "my-policy",
+"index.lifecycle.rollover_alias": "my-index"
+}
+}
 }
 ```
 
----
-
-## 7. جستجو در ایندکس
-
-برای جستجوی داده‌ها:
-```json
-GET /my-index-*/_search
-{
-  "query": {
-    "match": {
-      "message": "Hello"
-    }
-  }
-}
-```
-
----
-
-## ترتیب اجرای مراحل:
-1. **ایجاد Template**
-2. **ایجاد ILM Policy**
-3. **ایجاد ایندکس اولیه و Alias**
-4. **تعریف Rollover**
-5. **ایجاد Index Pattern در Kibana**
-6. **ارسال و جستجوی داده‌ها**
