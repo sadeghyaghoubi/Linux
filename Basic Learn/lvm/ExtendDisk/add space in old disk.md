@@ -1,7 +1,8 @@
 اگر افزایش حجم برروی یکی از دیسک های موجود باشد باید از دستورات زیر استفاده کرد
 در این مثال افزایش حجم برروی sda بوده است
 
-```cfdisk 
+```
+cfdisk 
 ```
 Go to the partition you wish to increase the disk size
 Select resize
