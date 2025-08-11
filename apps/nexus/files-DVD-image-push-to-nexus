@@ -1,0 +1,38 @@
+ایزو نسخه dvd دانلود کنید اخرین ورژن هم باشه بعد اونو mount کنید به ماشینتون
+
+بعد با یه حلقه  for میتونین پکیجاشو بگیرین push کنید به  nexus
+
+
+
+شما اول یک دایرکتوری تو مسیر دلخواهتون میسازین 
+
+مثل :
+
+mkdir /mnt/rocky
+
+بعد ایزو رو که اضافه کردین به ماشین 
+
+mount /dev/sr0  /mnt/rocky
+
+ خودش  به صورت اوتومات پکیج هارو میندازه تو این فایله 
+ 
+/mnt/rocky
+
+بعد شما حلقه for بزنین میفرسته به نکسوز
+
+----------------------------------------------
+
+
+مثلا برای اوراکل  دوتا ریپو  yum hosted میسازیم
+
+به اسم  appstream   و  base os
+
+این appstream :
+
+for i in find . -name  *.rpm ; do  curl  -v -u  admin:admin  --upload-file     /mnt/oracle/AppStream/Packages/$i    http://ip/repository/Oracle-linux-AppStream/     ; done
+
+
+این  base os :
+
+
+for i in find . -name  *.rpm ; do  curl  -v -u  admin:admin  --upload-file     /mnt/oracle/BaseOS/Packages/$i    http://ip/repository/Oracle-linux-BaseOS/     ; done
