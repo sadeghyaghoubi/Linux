@@ -1,0 +1,61 @@
+vim /etc/yum.repos.d/local.repo
+```
+[_local_ol8.9_baseos_latest]
+name=local Oracle Linux 8 BaseOS
+baseurl=http://IP REPOSITORY/repository/ole8.9_baseos/
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-oracle
+gpgcheck=1
+enabled=1
+module_hotfixes=true
+
+[_local_ol8.9_appstream]
+name=Oracle Linux 8 Application Stream
+baseurl=http://IP REPOSITORY/repository/ole8.9_appstream/
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-oracle
+gpgcheck=1
+enabled=1
+module_hotfixes=true
+
+[_local_zabbix]
+name=local Oracle Linux 8 Zabbix
+baseurl=http://IP REPOSITORY/repository/zabbix/
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-oracle
+gpgcheck=0
+enabled=1
+module_hotfixes=true
+
+[_local_containerd]
+name=Containerd
+baseurl=http://IP REPOSITORY/repository/containerd/
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-oracle
+gpgcheck=0
+enabled=1
+module_hotfixes=true
+```
+
+
+vim /etc/containerd/config.toml
+```
+    [plugins."io.containerd.grpc.v1.cri".registry]
+      [plugins."io.containerd.grpc.v1.cri".registry.mirrors]
+        [plugins."io.containerd.grpc.v1.cri".registry.mirrors."docker.io"]
+          endpoint = ["http://IP REPOSITORY:7048"]
+        [plugins."io.containerd.grpc.v1.cri".registry.mirrors."IP REPOSITORY:7048"]
+          endpoint = ["http://IP REPOSITORY:7048"]
+        [plugins."io.containerd.grpc.v1.cri".registry.mirrors."k8s.gcr.io"]
+          endpoint = ["http://IP REPOSITORY:7050"]
+        [plugins."io.containerd.grpc.v1.cri".registry.mirrors."gcr.io"]
+          endpoint = ["http://IP REPOSITORY:7051"]
+        [plugins."io.containerd.grpc.v1.cri".registry.mirrors."docker.elastic.co"]
+          endpoint = ["http://IP REPOSITORY:7052"]
+
+        [plugins."io.containerd.grpc.v1.cri".registry.mirrors."quay.io"]
+          endpoint = ["http://IP REPOSITORY:7049"]
+        [plugins."io.containerd.grpc.v1.cri".registry.mirrors."IP REPOSITORY:7055"]
+          endpoint = ["http://IP REPOSITORY:7055"]
+        [plugins."io.containerd.grpc.v1.cri".registry.mirrors."IP REPOSITORY:7080"]
+          endpoint = ["http://IP REPOSITORY:7080"]
+[plugins."io.containerd.grpc.v1.cri".registry.configs]
+[plugins."io.containerd.grpc.v1.cri".registry.configs."IP REPOSITORY:7080".tls]
+insecure_skip_verify = true
+```
