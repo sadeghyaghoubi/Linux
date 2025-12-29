@@ -22,9 +22,11 @@ sudo vi /opt/nexus/bin/nexus.vmoptions
 -Xms1200m
 -Xmx1200m
 -XX:MaxDirectMemorySize=2g
--XX:+UnlockExperimentalVMOptions
+
 -XX:+UseG1GC
 -XX:MaxGCPauseMillis=200
+-XX:-OmitStackTraceInFastThrow
+-XX:MaxJavaStackTraceDepth=1000000
 
 
 sudo vi /etc/systemd/system/nexus.service
@@ -34,13 +36,19 @@ Description=Nexus Repository Manager
 After=network.target
 
 [Service]
-Type=forking
-LimitNOFILE=65536
+Type=simple
+
 User=nexus
 Group=nexus
-ExecStart=/opt/nexus/bin/nexus start
+
+ExecStart=/opt/nexus/bin/nexus run
 ExecStop=/opt/nexus/bin/nexus stop
-Restart=on-abort
+
+Restart=on-failure
+RestartSec=10
+
+LimitNOFILE=65536
+TimeoutStartSec=3min
 
 [Install]
 WantedBy=multi-user.target
