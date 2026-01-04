@@ -22,11 +22,12 @@ sudo vi /opt/nexus/bin/nexus.vmoptions
 -Xms1200m
 -Xmx1200m
 -XX:MaxDirectMemorySize=2g
-
 -XX:+UseG1GC
 -XX:MaxGCPauseMillis=200
 -XX:-OmitStackTraceInFastThrow
--XX:MaxJavaStackTraceDepth=1000000
+-XX:+UnlockDiagnosticVMOptions
+-XX:+LogVMOutput
+-XX:LogFile=../sonatype-work/nexus3/log/jvm.log
 
 
 sudo vi /etc/systemd/system/nexus.service
