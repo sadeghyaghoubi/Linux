@@ -108,7 +108,7 @@ sudo vgcreate my_volume_group /dev/sdX
 vgs
 ```
 ```bash
-lvcreate -l 100%FREE -n lv-cache vg-cache
+lvcreate -l 100%FREE -n my_lv_name my_volume_group
 ```
 ## 6. ایجاد Logical Volume (LV)
 برای ایجاد یک حجم منطقی (LV) در یک گروه حجم، از دستور lvcreate استفاده می‌کنیم:
